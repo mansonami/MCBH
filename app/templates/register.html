@@ -1,0 +1,31 @@
+<!-- extend from base layout -->
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2">
+            <h2 class="text-center">Register</h2>
+            <form action="" method="post" name="login">
+                {{form.hidden_tag()}}
+                <input id="email" name="email" type="text" class="input-block-level" placeholder="Email address"><br>
+                {% for error in form.email.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}<br>
+                <input id="username" name="username" type="text" value="" class="input-block-level" placeholder="Email address"><br>
+                {% for error in form.username.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}<br>
+                <input id="password" name="password" type="password" class="input-block-level" placeholder="Password"><br>
+                {% for error in form.password.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}<br>
+                <input id="password2" name="password2" type="password" class="input-block-level" placeholder="Password"><br>
+                {% for error in form.password.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}<br>
+                <button class="btn btn-large btn-primary" type="submit">Join us</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

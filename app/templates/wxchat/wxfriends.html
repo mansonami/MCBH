@@ -1,0 +1,139 @@
+{% extends "wechat.html" %}
+{% block wxlogin %}
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                NickName
+            </th>
+            <th>
+                RemarkName
+            </th>
+            <th>
+                Right
+            </th>
+            <th>
+                Send
+            </th>
+            <th>
+                Setting
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if users %}
+            {% for u in users %}
+                <tr class="info">
+                    <td>
+                        {{u.id}}
+                    </td>
+                    <td>
+                        {{u.nickname}}
+                    </td>
+                    <td>
+                        {{u.remarkname}}
+                    </td>
+                    <td>
+                        {{u.right}}
+                    </td>
+                    <td>
+                        <button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#myModal{{ u.id }}">Send</button>
+                        <div class="modal fade" id="myModal{{ u.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title" id="myModalLabel">
+                                            {% if u.remarkname  %}
+                                                向  {{ u.remarkname }} 发送消息
+                                            {% else %}
+                                                向  {{ u.nickname }} 发送消息
+                                            {% endif %}
+                                        </h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Text:</span>
+                                            <input type="text" class="form-control" id="textid{{ u.id }}">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                                            退出
+                                        </button>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="wxsendmsg('{{ u.id }}','#textid{{ u.id }}')">发送</button>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal -->
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#Modal{{ u.id }}">Change</button>
+                        <div class="modal fade" id="Modal{{ u.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                            &times;
+                                        </button>
+                                        <h4 class="modal-title" id="myModalLabel">
+                                            {% if u.remarkname  %}
+                                                好友 {{ u.remarkname }} 设置
+                                            {% else %}
+                                                好友  {{ u.nickname }} 设置
+                                            {% endif %}
+                                        </h4>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon">微信名:</span>
+                                            <input type="text" class="form-control" id="Username{{ u.id }}" value="{{ u.nickname }}" disabled="true">
+                                        </div>
+                                        <br>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">备注名:</span>
+                                            <input type="text" class="form-control" id="RemarkName{{ u.id }}" value="{{ u.remarkname}}">
+                                        </div>
+                                        <br>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">权限:</span>
+                                            <input type="text" class="form-control" id="Right{{ u.id }}" value="{{ u.right}}">
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                                            关闭
+                                        </button>
+                                        <button type="button" class="btn btn-primary" id="{{ u.id }}" data-dismiss="modal" onclick="wxsettging('{{ u.id }}','#RemarkName{{ u.id }}','#Right{{ u.id }}')">
+                                            提交更改
+                                        </button>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal -->
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+    <div class="pull-right">
+        {% if prev_num %}
+            <a type="button" class="btn btn-info" href="{{ url_for('wechat_wxfriends') }}?page={{ prev_num }}">上一页</a>
+        {% else %}
+            <a type="button" class="btn btn-info" href="#">上一页</a>
+        {% endif %}
+    </div>
+    <div class="pull-left">
+        {% if next_num %}
+            <a type="button" class="btn btn-info" href="{{ url_for('wechat_wxfriends') }}?page={{ next_num }}">下一页</a>
+        {% else %}
+            <a type="button" class="btn btn-info" href="#">下一页</a>
+        {% endif %}
+    </div>
+{% endblock %}

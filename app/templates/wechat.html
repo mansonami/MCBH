@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block script %}
+
+    <script >
+        function wxsendmsg(toid,totext) {
+            $.post('/wechat/sendmsg', {
+                id:toid,
+                text:$(totext).val()
+            }).done(function(wxsendmsg) {
+                alert(wxsendmsg['text']);
+            })
+        }
+
+        function wxsettging(toid,nameid,rightid) {
+            if($(rightid).val() > 5) {
+                alert("权限范围1-4，请重新输入");
+                return;
+            }
+            $.post('/wechat/setting', {
+                id:toid,
+                remarkname:$(nameid).val(),
+                right:$(rightid).val()
+            }).done(function(wxsettging) {
+                alert(wxsettging['text']);
+                window.location.reload();
+            })
+        }
+
+        function timestamp(url){
+            //  var getTimestamp=Math.random();
+            var getTimestamp=new Date().getTime();
+            if(url.indexOf("?")>-1){
+                url=url+"×tamp="+getTimestamp
+            }else{
+                url=url+"?timestamp="+getTimestamp
+            }
+            location.href=url;
+            return url;
+        }
+    </script>
+{% endblock %}
+{% block content %}
+    {#    <script>#}
+    {#			var data = [#}
+    {#				{#}
+    {#					value: 30,#}
+    {#					color:"#F7464A"#}
+    {#				},#}
+    {#			];#}
+    {#			window.onload = function(){#}
+{#				var ctx = document.getElementById("myChart").getContext("2d");#}
+{#				new Chart(ctx).Doughnut(data);#}
+{#			}#}
+{#		</script>#}
+{#    <script>#}
+{#$( document ).ready(function() {#}
+{#        $('#myStat').circliful();#}
+{#    });#}
+{#</script>#}
+
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-2 column">
+                <ul class="nav nav-pills nav-stacked">
+                    {#                    <li class="active"><a href="#">Home</a></li>#}
+                    {% if not is_wxchat %}
+                        <li class="active">
+                            <a href="javascript:timestamp('{{ url_for('wechat_login')}}')">登录微信</a>
+                        </li>
+                    {% endif %}
+
+                    <li class="active">
+                        <a href="{{ url_for('wechat_wxfriends') }}">好友列表</a>
+                    </li>
+                    <li >
+                        <a href="#">功能设置</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('wechat_wxlogout') }}">退出微信</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6 column">
+                {% block wxlogin %}
+                {% endblock %}
+            </div>
+            {% if is_wxchat %}
+                <div class="col-md-4 column">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>
+                                Message
+                            </th>
+                            <th>
+                                Sender
+                            </th>
+                            <th>
+                                Timestamp
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if posts %}
+                            {% for post in posts%}
+                                <tr class="success">
+                                    <td>
+                                        {{post.body}}
+                                    </td>
+                                    <td>
+                                        {% if post.wxuser_id.remarkname!='' %}
+                                            {{ post.wxuser_id.remarkname }}
+                                        {% else %}
+                                            {{ post.wxuser_id.nickname }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {{momentjs(post.timestamp).fromNow()}}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
