@@ -1,0 +1,5 @@
+﻿.idea
+app.db
+bot.db
+__pycache__\
+flask_menv\
