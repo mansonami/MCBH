@@ -266,12 +266,9 @@ def send_msg(id,text):
 
 
 def setrickname(id,name):
-    print(id)
-    print(name)
     user=Boxfriends.Wxuser.get(id=int(id))
-    print(user.wx_uid)
-    print('@rik@%s'%name)
-    itchat.send('@rik@%s'%name,user.wx_uid)
+    logger.debug(user.wx_uid)
+    itchat.set_alias(user.wx_uid,name)
 
 #====财务使用
 #发送对账单

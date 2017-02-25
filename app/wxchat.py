@@ -65,16 +65,27 @@ def sendmsg(id,text):
     s.sendto(data.encode(), ('127.0.0.1', 9999))
     s.close()
 
+
+
 def WXsetting(id,name,right):
     try:
         user=Wxuser.get(id=id)
         user.right=right
-        user.remarkname=name
+        if user.remarkname!=name:
+            user.remarkname = name
+            setrickname(id,name)
         user.save()
         return '修改成功'
     except:
         return '修改失败'
 
+
+def setrickname(id,name):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    data = 'name %s %s'%(id,name)
+    app.logger.debug(data)
+    s.sendto(data.encode(), ('127.0.0.1', 9999))
+    s.close()
 
 
 def getpid():

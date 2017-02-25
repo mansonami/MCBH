@@ -95,6 +95,7 @@ def Get_sell(datemin=time.strftime("%m-%d-%Y",time.localtime(time.time())),datem
                 return table_3f_str
     except BaseException as e :
         logger.info(e)
+        return '联系管理员 更新专柜信息'
     finally:
         cursor.close()
         conn.close()

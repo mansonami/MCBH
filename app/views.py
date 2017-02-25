@@ -74,7 +74,7 @@ def login():
         if user is not None and user.verify_password(form.password.data):
             session['remember_me'] = form.remember_me.data
             login_user(user, form.remember_me.data)
-            return redirect(request.args.get('next') or url_for('index'))
+            return redirect(request.args.get('next') or url_for('wechat'))
 
         flash('Invalid username or password.')
     return render_template('login.html',
@@ -211,6 +211,10 @@ def wechat_setting():
 @app.route('/wechat/queryvip', methods = ['POST','GET'])
 def wechat_queryvip():
     phone = request.form['phone']
+    if len(phone)!=11:
+        return jsonify({
+        'text': '不是电话号码'
+    })
     return jsonify({
         'text': Get_vip_integral('phone %s' % phone)
     })
