@@ -27,10 +27,8 @@ Pillow==4.0.0
 psutil==5.1.3
 pyodbc==4.0.3
 pyparsing==2.1.10
-pypiwin32==219
 python3-openid==3.0.10
 pytz==2016.10
-pywin32==220
 requests==2.13.0
 six==1.10.0
 SQLAlchemy==1.1.5
