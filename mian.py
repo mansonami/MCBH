@@ -66,7 +66,7 @@ def text_reply(msg):
         return func(msg['Text'],FromUserName=msg['FromUserName'])
     except KeyError as e:
         logger.debug(e)
-        return Tuling_box(msg['Text'],FromUserName=msg['FromUserName'])
+        # return Tuling_box(msg['Text'],FromUserName=msg['FromUserName'])
 
 
 #收到好友邀请自动添加好友
@@ -154,7 +154,5 @@ def ec():
 thr = Thread(target=UDP, args=[])
 thr.setDaemon(True)
 thr.start()
-itchat.auto_login(True)#暂存登录状态
+itchat.auto_login(False)#暂存登录状态
 itchat.run()
-
-itchat.set_alias

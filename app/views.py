@@ -139,6 +139,7 @@ def wechat_login():
                                img_path=False,
                                is_wxchat=ret,
                                active_page='wechat_login')
+    flash('请勿重复登录')
     return redirect(url_for('wechat'))
 
 @app.route('/wechat/wxfriends/', methods=['GET', 'POST'])
