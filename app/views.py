@@ -209,12 +209,26 @@ def wechat_setting():
                                is_wxchat=ret,
                                active_page='wechat_setting')
 
+    post_type = request.form['type']
+    print(post_type)
     if ret:
-        id=request.form['id']
-        remarkname=request.form['remarkname']
-        right=request.form['right']
+        if post_type == 'usersetting':
+            id = request.form['id']
+            remarkname = request.form['remarkname']
+            right = request.form['right']
+            return jsonify({
+                'text': WXsetting(id, remarkname, right)
+            })
+    if post_type == 'adminphoneset':
+        ph1 = request.form['phone1']
+        ph2 = request.form['phone2']
+        if len(ph1)==11 and len(ph2)==11:
+            return jsonify({
+                'text':'更新成功'
+            })
+            #操作写进数据库
         return jsonify({
-            'text': WXsetting(id,remarkname,right)
+            'text':'Error:电话号码不正确'
         })
     return 'False'
 

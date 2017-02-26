@@ -17,19 +17,29 @@
                 alert(wxsendmsg['text']);
             })
         }
-
         function wxsettging(toid,nameid,rightid) {
             if($(rightid).val() > 5) {
                 alert("权限范围1-4，请重新输入");
                 return;
             }
             $.post('/wechat/setting', {
+                type:"usersetting",
                 id:toid,
                 remarkname:$(nameid).val(),
                 right:$(rightid).val()
             }).done(function(wxsettging) {
                 alert(wxsettging['text']);
                 window.location.reload();
+            })
+        }
+
+        function wxadminphoneset() {
+            $.post('/wechat/setting',{
+                type:'adminphoneset',
+                phone1:$('#adminphone1').val(),
+                phone2:$('#adminphone2').val()
+            }).done(function (wxadminphoneset) {
+                alert(wxadminphoneset['text'])
             })
         }
 
@@ -63,7 +73,7 @@
             </div>
             <div class="col-md-10 column">
                 {% block wxlogin %}
-                    哈哈哈哈哈哈哈
+                    仪表盘，开发中
                 {% endblock %}
             </div>
                 {#

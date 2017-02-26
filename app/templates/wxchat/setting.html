@@ -1,69 +1,73 @@
 {% extends "wechat.html" %}
 {% block wxlogin %}
-<div class="panel-group" id="accordion">
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<h4 class="panel-title">
-				<a data-toggle="collapse" data-parent="#accordion"
-				   href="#collapseOne">
-					基本  设置
-				</a>
-			</h4>
-		</div>
-        <div id="collapseOne" class="panel-collapse collapse in">
-            <div class="panel-body">
-
-
-                <div class="panel panel-primary">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">面板标题</h3>
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion"
+                               href="#setuserphone">
+                                Administrator Phone Settings
+                            </a>
+                        </h4>
                     </div>
-                    <div class="panel-body">
-                        这是一个基本的面板
+                    <div id="setuserphone" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <table class="table table-hover">
+                                <caption><button type="button" class="btn btn-default" onclick="wxadminphoneset()">提交</button></caption>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Phone:</span>
+                                            <input id="adminphone1" type="text" class="form-control" value="13518204382">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Phone:</span>
+                                            <input id="adminphone2" type="text" class="form-control" value="13541106254">
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <table class="table">
-                        <th>产品</th><th>价格 </th>
-                        <tr><td>产品 A</td><td>200</td></tr>
-                        <tr><td>产品 B</td><td>400</td></tr>
-                    </table>
                 </div>
+
+            </div>
+            <div class="col-md-4">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion"
+                               href="#collapseTwo">
+                                    高级 设置
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                Nihil anim keffiyeh helvetica, craft beer labore wes anderson
+                                cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
+                                vice lomo.
+                            </div>
+                        </div>
+                    </div>
+
+            </div>
+            <div class="col-md-4">
 
             </div>
         </div>
     </div>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4 class="panel-title">
-				<a data-toggle="collapse" data-parent="#accordion"
-				   href="#collapseTwo">
-					高级 设置
-				</a>
-			</h4>
-		</div>
-		<div id="collapseTwo" class="panel-collapse collapse">
-			<div class="panel-body">
-				Nihil anim keffiyeh helvetica, craft beer labore wes anderson
-				cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
-				vice lomo.
-			</div>
-		</div>
-	</div>
-{#	<div class="panel panel-default">#}
-{#		<div class="panel-heading">#}
-{#			<h4 class="panel-title">#}
-{#				<a data-toggle="collapse" data-parent="#accordion"#}
-{#				   href="#collapseThree">#}
-{#					点击我进行展开，再次点击我进行折叠。第 3 部分#}
-{#				</a>#}
-{#			</h4>#}
-{#		</div>#}
-{#		<div id="collapseThree" class="panel-collapse collapse">#}
-{#			<div class="panel-body">#}
-{#				Nihil anim keffiyeh helvetica, craft beer labore wes anderson#}
-{#				cred nesciunt sapiente ea proident. Ad vegan excepteur butcher#}
-{#				vice lomo.#}
-{#			</div>#}
-{#		</div>#}
-{#	</div>#}
-</div>
+
+
+
+
 {% endblock %}

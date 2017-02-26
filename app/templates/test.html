@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>给表格内部动态添加行</title>
+<style type="text/css">
+.tableStyle
+{
+border-collapse: collapse;
+width:100%;
+}
+td
+{
+font-size:12px;
+height:25px;
+border:1px solid #CCD5E8;
+}
+.btn {
+font-size:12pt; color: #003399;
+border: 1px #003399 solid;
+color:#006699;
+border-bottom: #93bee2 1px solid;
+border-left: #93bee2 1px solid;
+border-right: #93bee2 1px solid;
+border-top: #93bee2 1px solid;
+background-color: #e8f4ff;
+cursor: pointer;
+font-style: normal ;
+width:20px;
+height:22px;
+font-family:Verdana;font-family:Georgia;_font-family:Tahoma;
+padding:0 10px 1px;padding:3px 3px 1px;_padding:0 4px 1px;
+line-height:18px;line-height:14px;_line-height:16px;
+}
+</style>
+</head>
+<body>
+<table class="tableStyle" id="OwnershipStructure">
+<tr>
+<td width="15%" rowspan="2" id="StructureLeft1">
+标的企业
+
+股权结构 </td>
+<td width="15%" rowspan="2" id="StructureLeft2">股东人数：人 </td>
+<td width="30%">
+前十名出资人的名称<strong>（做成动态，填几个显示几个）</strong> </td>
+<td width="30%">出资比例 </td>
+</tr>
+<tr id="StructureRight">
+<td>
+<input id="Text1" type="text" /></td>
+<td>
+<input id="Text2" type="text" /><input id="btnAddRow" class="btn"
+onclick="AddStructureRow()" type="button" value="+" />
+</td>
+</tr>
+<tr>
+<td>评估机构</td><td></td><td></td><td></td>
+</tr>
+<tr><td>评估机构</td><td></td><td></td><td></td>
+</tr>
+</table>
+<script language="javascript" type="text/javascript">
+//表单操作
+function AddStructureRow()
+{
+var obj=document.getElementById("OwnershipStructure");
+var tr= obj.rows["StructureRight"];
+//alert(tr.rowIndex);
+var count=document.getElementById("StructureLeft1").getAttribute("rowspan");
+document.getElementById("StructureLeft1").setAttribute("rowSpan",parseInt(count)+1);
+document.getElementById("StructureLeft2").setAttribute("rowSpan",parseInt(count)+1);
+//插入行 code form www.jb51 .net
+var tr =obj.insertRow(tr.rowIndex+1);
+var trId="trStructure"+tr.rowIndex;
+tr.setAttribute("id",trId);
+var td0 = tr.insertCell(0);
+td0.setAttribute("align","left");
+//td0.setAttribute("colSpan","4");
+td0.innerHTML = "<input ID='txtName' type='text'/> ";
+var td1 = tr.insertCell(1);
+td1.setAttribute("align","left");
+//td1.setAttribute("colSpan","3");
+td1.innerHTML = "<input ID='txtName' type='text'/><input id='btnDelRow' class='btn' type='button' value='-' onclick='DelStructureRow("+tr.rowIndex+")'/>";
+}
+function DelStructureRow(rowIndex)
+{
+var obj=document.getElementById("OwnershipStructure");
+obj.deleteRow(rowIndex);
+var count=document.getElementById("StructureLeft1").getAttribute("rowspan");
+document.getElementById("StructureLeft1").setAttribute("rowSpan",parseInt(count)-1); //rowSpan 不要写成rowspan，因为在IE6 与IE7下会有问题
+document.getElementById("StructureLeft2").setAttribute("rowSpan",parseInt(count)-1);
+}
+//End---股东出资人表单操作
+</script>
+</body>
+</html>
