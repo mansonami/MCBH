@@ -1,3 +1,4 @@
+
 {% extends "wechat.html" %}
 {% block wxlogin %}
     <table class="table table-bordered table-hover">
@@ -39,8 +40,9 @@
                     <td>
                         {{u.right}}
                     </td>
+                {% if is_wxchat %}
                     <td>
-                        <button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#myModal{{ u.id }}">Send</button>
+                        <button class="btn btn-warning btn-xs " data-toggle="modal" data-target="#myModal{{ u.id }}">Send</button>
                         <div class="modal fade" id="myModal{{ u.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -117,6 +119,14 @@
                             </div><!-- /.modal -->
                         </div>
                     </td>
+                {% else %}
+                    <td>
+                        <button class="btn btn-warning btn-xs disabled" >Send</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-xs disabled" >Change</button>
+                    </td>
+                {% endif %}
                 </tr>
             {% endfor %}
         {% endif %}

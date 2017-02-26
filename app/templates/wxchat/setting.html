@@ -1,1 +1,69 @@
 {% extends "wechat.html" %}
+{% block wxlogin %}
+<div class="panel-group" id="accordion">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<a data-toggle="collapse" data-parent="#accordion"
+				   href="#collapseOne">
+					基本  设置
+				</a>
+			</h4>
+		</div>
+        <div id="collapseOne" class="panel-collapse collapse in">
+            <div class="panel-body">
+
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">面板标题</h3>
+                    </div>
+                    <div class="panel-body">
+                        这是一个基本的面板
+                    </div>
+                    <table class="table">
+                        <th>产品</th><th>价格 </th>
+                        <tr><td>产品 A</td><td>200</td></tr>
+                        <tr><td>产品 B</td><td>400</td></tr>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+				<a data-toggle="collapse" data-parent="#accordion"
+				   href="#collapseTwo">
+					高级 设置
+				</a>
+			</h4>
+		</div>
+		<div id="collapseTwo" class="panel-collapse collapse">
+			<div class="panel-body">
+				Nihil anim keffiyeh helvetica, craft beer labore wes anderson
+				cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
+				vice lomo.
+			</div>
+		</div>
+	</div>
+{#	<div class="panel panel-default">#}
+{#		<div class="panel-heading">#}
+{#			<h4 class="panel-title">#}
+{#				<a data-toggle="collapse" data-parent="#accordion"#}
+{#				   href="#collapseThree">#}
+{#					点击我进行展开，再次点击我进行折叠。第 3 部分#}
+{#				</a>#}
+{#			</h4>#}
+{#		</div>#}
+{#		<div id="collapseThree" class="panel-collapse collapse">#}
+{#			<div class="panel-body">#}
+{#				Nihil anim keffiyeh helvetica, craft beer labore wes anderson#}
+{#				cred nesciunt sapiente ea proident. Ad vegan excepteur butcher#}
+{#				vice lomo.#}
+{#			</div>#}
+{#		</div>#}
+{#	</div>#}
+</div>
+{% endblock %}

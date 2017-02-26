@@ -1,6 +1,13 @@
 {% extends "base.html" %}
-{% block script %}
 
+{% set navigation_bar = [
+    ('/wechat', 'wechat_login', '登录微信'),
+    ('/wechat/wxfriends', 'wechat_wxfriends', '好友列表'),
+    ('/wechat/setting', 'wechat_setting', '微信设置'),
+    ('/wechat/wxlogout', 'wechat_wxlogout', '退出微信')
+] -%}
+
+{% block script %}
     <script >
         function wxsendmsg(toid,totext) {
             $.post('/wechat/sendmsg', {
@@ -40,51 +47,26 @@
     </script>
 {% endblock %}
 {% block content %}
-    {#    <script>#}
-    {#			var data = [#}
-    {#				{#}
-    {#					value: 30,#}
-    {#					color:"#F7464A"#}
-    {#				},#}
-    {#			];#}
-    {#			window.onload = function(){#}
-{#				var ctx = document.getElementById("myChart").getContext("2d");#}
-{#				new Chart(ctx).Doughnut(data);#}
-{#			}#}
-{#		</script>#}
-{#    <script>#}
-{#$( document ).ready(function() {#}
-{#        $('#myStat').circliful();#}
-{#    });#}
-{#</script>#}
-
     <div class="container">
         <div class="row clearfix">
             <div class="col-md-2 column">
                 <ul class="nav nav-pills nav-stacked">
-                    {#                    <li class="active"><a href="#">Home</a></li>#}
-                    {% if not is_wxchat %}
-                        <li class="active">
-                            <a href="javascript:timestamp('{{ url_for('wechat_login')}}')">登录微信</a>
-                        </li>
-                    {% endif %}
-
-                    <li class="active">
-                        <a href="{{ url_for('wechat_wxfriends') }}">好友列表</a>
-                    </li>
-                    <li >
-                        <a href="#">功能设置</a>
-                    </li>
-                    <li>
-                        <a href="{{ url_for('wechat_wxlogout') }}">退出微信</a>
-                    </li>
+                    {% for href, id, caption in navigation_bar %}
+                        <li{% if id == active_page %} class="active"{% endif %}>
+                            {% if id=="wechat_login"  %}
+                                <a href="javascript:timestamp('{{ url_for('wechat_login')}}')">登录微信</a>
+                            {% else %}
+                                <a href="{{ href|e }}">{{ caption|e }}</a></li>
+                            {% endif %}
+                    {% endfor %}
                 </ul>
             </div>
-            <div class="col-md-6 column">
+            <div class="col-md-10 column">
                 {% block wxlogin %}
                 {% endblock %}
             </div>
-            {% if is_wxchat %}
+                {#
+                {% if is_wxchat %}
                 <div class="col-md-4 column">
                     <table class="table table-bordered">
                         <thead>
@@ -123,7 +105,8 @@
                         </tbody>
                     </table>
                 </div>
-            {% endif %}
+                {% endif %}
+                #}
         </div>
     </div>
 {% endblock %}

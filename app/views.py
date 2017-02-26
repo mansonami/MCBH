@@ -115,7 +115,8 @@ def wechat():
     posts = Wxpost.select().order_by(Wxpost.timestamp.desc()).paginate(1,15)
     return render_template('wechat.html',
                            posts=posts,
-                           is_wxchat=ret)
+                           is_wxchat=ret,
+                           active_page='wechat')
 
 @app.route('/wechat/login/', methods=['GET', 'POST'])
 @login_required
@@ -129,13 +130,15 @@ def wechat_login():
             return render_template('wxchat/wxlogin.html',
                                    posts=[],
                                    img_path='%s.jpg' % temp,
-                                   is_wxchat=ret)
+                                   is_wxchat=ret,
+                                   active_page='wechat_login')
         flash('Log in time out,Please get the qr code again.')
         wx_logout()
         return render_template('wxchat/wxlogin.html',
                                posts=[],
                                img_path=False,
-                               is_wxchat=ret)
+                               is_wxchat=ret,
+                               active_page='wechat_login')
     return redirect(url_for('wechat'))
 
 @app.route('/wechat/wxfriends/', methods=['GET', 'POST'])
@@ -143,7 +146,7 @@ def wechat_login():
 def wechat_wxfriends():
     ret=wx_is_login_state()
     if not ret:
-        flash('微信未登录,不能发送消息')
+        flash('微信未登录,停用部分功能')
     page = request.args.get('page', 1, type=int)
     #计算页数
     prev_num=page-1
@@ -161,6 +164,7 @@ def wechat_wxfriends():
                            is_wxchat=ret,
                            prev_num=prev_num,  #上一页
                            next_num=next_num,  #下一页
+                           active_page='wechat_wxfriends'
                            )
 
 @app.route('/wechat/wxlogout/', methods=['GET', 'POST'])
@@ -173,7 +177,6 @@ def wechat_wxlogout():
         return redirect(url_for('wechat'))
     flash('未登录微信')
     return redirect(url_for('wechat'))
-
 
 #发送消息ajax
 @app.route('/wechat/sendmsg', methods = ['POST'])
@@ -199,7 +202,13 @@ def wechat_sendmsg():
 @app.route('/wechat/setting', methods = ['POST','GET'])
 @login_required
 def wechat_setting():
-    if wx_is_login_state():
+    ret=wx_is_login_state()
+    if request.method=='GET':
+        return render_template('wxchat/setting.html',
+                               is_wxchat=ret,
+                               active_page='wechat_setting')
+
+    if ret:
         id=request.form['id']
         remarkname=request.form['remarkname']
         right=request.form['right']

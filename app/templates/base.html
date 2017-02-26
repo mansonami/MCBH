@@ -31,9 +31,7 @@
                         <li>
                             <a href="{{ url_for('wechat') }}">WeChat</a>
                         </li>
-
                     </ul>
-
                     <ul class="nav navbar-nav navbar-right">
                         {% if g.user.is_authenticated %}
                             {% if g.user.username %}
@@ -56,21 +54,24 @@
                     </ul>
                 </div>
             </nav>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-dismissable alert-danger">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <li>{{ message }}</li>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
         </div>
     </div>
 </div>
-  {% with messages = get_flashed_messages() %}
-  {% if messages %}
-  {% for message in messages %}
-			<div class="alert alert-dismissable alert-danger">
-				 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-				<li>{{ message }}</li>
-			</div>
-  {% endfor %}
-  {% endif %}
-  {% endwith %}
-  {% block content %}
-  {% endblock %}
+
+{% block content %}
+{% endblock %}
 </body>
 </html>
 
