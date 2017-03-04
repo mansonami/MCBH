@@ -9,9 +9,6 @@ class Wxuser(db.Model):
     right =db.Column(db.Integer,default=1)  # 权限
     posts = db.relationship('Wxpost', backref='author', lazy='dynamic')
 
-    # def __init__(self,wx_uid):
-    #     self.wx_uid=wx_uid
-
     def get_id(self,wx_uid):
         return Wxuser.query.filter_by(wx_uid=wx_uid).first().id
 
@@ -96,23 +93,43 @@ class Post(db.Model):
     timestamp = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-
     def __repr__(self):
         return '<Post %r>' % (self.body)
 
-
-class Statemsg(db.Model):
+class Wxsetting(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    msg=db.Column(db.String(255))
-    timestamp = db.Column(db.DateTime)
+    adminphone=db.Column(db.String(64))#管理员电话
+    OnSendalarmMsg=db.Column(db.Boolean)#是否启用报警短信
+    Reboton=db.Column(db.Boolean)#是否启用小黄鸭
+    Add_friend=db.Column(db.Boolean)#自动添加好友
+    Get_vip_integral = db.Column(db.Boolean)  # 查询积分
+    Send_bill_balance_teble= db.Column(db.Boolean)  # 对账单
+    Sale_table= db.Column(db.Boolean)  # 销售报表
+    Sale_today= db.Column(db.Boolean)  # 销售
+    Sale_Brand_All= db.Column(db.Boolean)  # 专柜销售
+    Sale_Brand_Table= db.Column(db.Boolean)  # 专柜详细
 
+    def get(self):
+        q=Wxsetting.query.get(1)
+        if q:
+            return q
+        else:
+            q=Wxsetting()
+            return q
+
+    def getsetting(self):
+        q=self.get()
+        return {
+            'adminphone':q.adminphone,
+            'OnSendalarmMsg':q.OnSendalarmMsg,
+            'Reboton':q.Reboton,
+            'Add_friend':q.Add_friend,
+            'Get_vip_integral':q.Get_vip_integral,
+            'Send_bill_balance_teble': q.Send_bill_balance_teble,
+            'Sale_table': q.Sale_table,
+            'Sale_today': q.Sale_today,
+            'Sale_Brand_All': q.Sale_Brand_All,
+            'Sale_Brand_Table': q.Sale_Brand_Table
+        }
     def __repr__(self):
-        return '<Statemsg %r>' % (self.msg)
-
-class Logmsg(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    msg=db.Column(db.String(255))
-    timestamp = db.Column(db.DateTime)
-
-    def __repr__(self):
-        return '<Statemsg %r>' % (self.msg)
+        return '<Wxsetting %r>' % (self.id)

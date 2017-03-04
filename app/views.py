@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from flask_sqlalchemy import get_debug_queries
 from app import app,lm,db
 from .forms import LoginForm,RegistrationForm,PostForm
-from .models import User,Post
+from .models import User,Post,Wxsetting
 from datetime import datetime
 from config import POSTS_PER_PAGE,DATABASE_QUERY_TIMEOUT
 from .wxchat import wx_login_bat,wx_is_login_state,wx_logout,sendmsg,WXsetting
@@ -207,10 +207,10 @@ def wechat_setting():
     if request.method=='GET':
         return render_template('wxchat/setting.html',
                                is_wxchat=ret,
-                               active_page='wechat_setting')
+                               active_page='wechat_setting',
+                               function_list=Wxsetting().getsetting())
 
     post_type = request.form['type']
-    print(post_type)
     if ret:
         if post_type == 'usersetting':
             id = request.form['id']
@@ -223,6 +223,10 @@ def wechat_setting():
         ph1 = request.form['phone1']
         ph2 = request.form['phone2']
         if len(ph1)==11 and len(ph2)==11:
+            setting=Wxsetting().get()
+            setting.adminphone='%s,%s'%(ph1,ph2)
+            db.session.add(setting)
+            db.session.commit()
             return jsonify({
                 'text':'更新成功'
             })
@@ -230,7 +234,69 @@ def wechat_setting():
         return jsonify({
             'text':'Error:电话号码不正确'
         })
-    return 'False'
+    elif post_type=='Advanced_Settings':
+        if 'true' in request.form['OnSendalarmMsg']:
+            ret1 =True
+        else:
+            ret1=False
+        if 'true' in request.form['Reboton']:
+            ret2 =True
+        else:
+            ret2=False
+        q=Wxsetting().get()
+        q.OnSendalarmMsg = ret1
+        q.Reboton=ret2
+        db.session.add(q)
+        db.session.commit()
+        return jsonify({
+            'text': '操作成功'
+        })
+    elif post_type=='Feature_Settings':
+        if 'true' in request.form['Add_friend']:
+            ret1 =True
+        else:
+            ret1=False
+        if 'true' in request.form['Get_vip_integral']:
+            ret2 =True
+        else:
+            ret2=False
+        if 'true' in request.form['Send_bill_balance_teble']:
+            ret3 =True
+        else:
+            ret3=False
+        if 'true' in request.form['Sale_table']:
+            ret4 =True
+        else:
+            ret4=False
+        if 'true' in request.form['Sale_today']:
+            ret5 =True
+        else:
+            ret5=False
+        if 'true' in request.form['Sale_Brand_All']:
+            ret6 =True
+        else:
+            ret6=False
+        if 'true' in request.form['Sale_Brand_Table']:
+            ret7 =True
+        else:
+            ret7=False
+        q = Wxsetting().get()
+        q.Add_friend = ret1
+        q.Get_vip_integral = ret2
+        q.Send_bill_balance_teble = ret3
+        q.Sale_table = ret4
+        q.Sale_today = ret5
+        q.Sale_Brand_All = ret6
+        q.Sale_Brand_Table = ret7
+        db.session.add(q)
+        db.session.commit()
+        return jsonify({
+            'text': '操作成功'
+        })
+    return jsonify({
+        'text': '操作失败'
+    })
+
 
 @app.route('/wechat/queryvip', methods = ['POST','GET'])
 def wechat_queryvip():
@@ -242,7 +308,6 @@ def wechat_queryvip():
     return jsonify({
         'text': Get_vip_integral('phone %s' % phone)
     })
-
 
 @app.errorhandler(404)
 def internal_error(error):

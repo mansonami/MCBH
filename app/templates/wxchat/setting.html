@@ -1,4 +1,32 @@
 {% extends "wechat.html" %}
+{% block script %}
+<script>
+        function Wx_Feature_Settings(){
+            $.post('/wechat/setting',{
+                type:'Feature_Settings',
+                Add_friend:$('#Add_friend').bootstrapSwitch('state'),
+                Get_vip_integral:$('#Get_vip_integral').bootstrapSwitch('state'),
+                Send_bill_balance_teble:$('#Send_bill_balance_teble').bootstrapSwitch('state'),
+                Sale_table:$('#Sale_table').bootstrapSwitch('state'),
+                Sale_today:$('#Sale_today').bootstrapSwitch('state'),
+                Sale_Brand_All:$('#Sale_Brand_All').bootstrapSwitch('state'),
+                Sale_Brand_Table:$('#Sale_Brand_Table').bootstrapSwitch('state'),
+            }).done(function (Wx_Feature_Settings) {
+                alert(Wx_Feature_Settings['text'])
+            })
+        }
+        function Wx_Advanced_Settings(){
+            $.post('/wechat/setting',{
+                type:'Advanced_Settings',
+                OnSendalarmMsg:$('#OnSendalarmMsg').bootstrapSwitch('state'),
+                Reboton:$('#Reboton').bootstrapSwitch('state'),
+            }).done(function (Wx_Advanced_Settings) {
+                alert(Wx_Advanced_Settings['text'])
+            })
+        }
+
+</script>
+{% endblock %}
 {% block wxlogin %}
     <div class="col-md-12">
         <div class="row">
@@ -8,14 +36,14 @@
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion"
                                href="#setuserphone">
-                                Administrator Phone Settings
+                                管理员 手机 设置
                             </a>
                         </h4>
                     </div>
-                    <div id="setuserphone" class="panel-collapse collapse in">
+                    <div id="setuserphone" class="panel-collapse collapse">
                         <div class="panel-body">
                             <table class="table table-hover">
-                                <caption><button type="button" class="btn btn-default" onclick="wxadminphoneset()">提交</button></caption>
+                                <caption><button type="button" class="btn btn-default" onclick="wxadminphoneset()">Save</button></caption>
                                 <tbody>
                                 <tr>
                                     <td>
@@ -38,10 +66,8 @@
                         </div>
                     </div>
                 </div>
-
             </div>
             <div class="col-md-4">
-
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
@@ -51,23 +77,153 @@
                                 </a>
                             </h4>
                         </div>
-                        <div id="collapseTwo" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                Nihil anim keffiyeh helvetica, craft beer labore wes anderson
-                                cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
-                                vice lomo.
-                            </div>
+                    <div id="collapseTwo" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <caption><button type="button" class="btn btn-default" onclick="Wx_Advanced_Settings()">Save</button></caption>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        掉线报警
+                                    </td>
+                                    <td>
+                                        <div class="switch" tabindex="0">
+                                            <input type="checkbox" id="OnSendalarmMsg" {% if function_list['OnSendalarmMsg'] %}checked {% endif %}>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        聊天机器人
+                                    </td>
+                                    <td>
+                                        <div class="switch" tabindex="0">
+                                            <input type="checkbox" id="Reboton" {% if function_list['Reboton'] %}checked {% endif %}>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-
+                </div>
             </div>
             <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion"
+                               href="#collapseThree">
+                                功能 设置
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <caption><button type="button" class="btn btn-default" onclick="Wx_Feature_Settings()">Save</button></caption>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        自动添加好友
+                                    </td>
+                                    <td>
+                                        <div class="switch" tabindex="0">
+                                            <input type="checkbox" id="Add_friend" {% if function_list['Add_friend'] %}checked {% endif %}>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        查询积分
+                                    </td>
+                                    <td>
+                                        <div class="switch" tabindex="0">
+                                            <input type="checkbox" id="Get_vip_integral" {% if function_list['Get_vip_integral'] %}checked {% endif %}>
+                                        </div>
+                                    </td>
+                                </tr>
 
+                                <tr>
+                                    <td>
+                                        销售
+                                    </td>
+                                    <td>
+                                        <div class="switch" tabindex="0">
+                                            <input type="checkbox" id="Sale_today" {% if function_list['Sale_today'] %}checked {% endif %}>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        销售报表
+                                    </td>
+                                    <td>
+                                        <div class="switch" tabindex="0">
+                                            <input type="checkbox" id="Sale_table" {% if function_list['Sale_table'] %}checked {% endif %}>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        专柜销售
+                                    </td>
+                                    <td>
+                                        <div class="switch" tabindex="0">
+                                            <input type="checkbox" id="Sale_Brand_All" {% if function_list['Sale_Brand_All'] %}checked {% endif %}>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        专柜详细
+                                    </td>
+                                    <td>
+                                        <div class="switch" tabindex="0">
+                                            <input type="checkbox" id="Sale_Brand_Table" {% if function_list['Sale_Brand_Table'] %}checked {% endif %}>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        对账单
+                                    </td>
+                                    <td>
+                                        <div class="switch" tabindex="0">
+                                            <input type="checkbox" id="Send_bill_balance_teble" {% if function_list['Send_bill_balance_teble'] %}checked {% endif %}>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
+<script>
 
+    $("div[class='switch']").each(function() {
+        $this = $(this);
+    var onColor = $this.attr("onColor");
+    var offColor = $this.attr("offColor");
+    var onText = $this.attr("onText");
+    var offText = $this.attr("offText");
+    var labelText = $this.attr("labelText");
 
-
+    var $switch_input = $(" :only-child", $this);
+    $switch_input.bootstrapSwitch({
+        onColor : onColor,
+        offColor : offColor,
+        onText : onText,
+        offText : offText,
+        labelText : labelText
+    });
+});
+</script>
 {% endblock %}

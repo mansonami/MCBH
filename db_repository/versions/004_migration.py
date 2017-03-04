@@ -5,9 +5,13 @@ from migrate import *
 from migrate.changeset import schema
 pre_meta = MetaData()
 post_meta = MetaData()
-user = Table('user', post_meta,
+wxsetting = Table('wxsetting', post_meta,
     Column('id', Integer, primary_key=True, nullable=False),
-    Column('email', String(length=64)),
+    Column('adminphone', String(length=64)),
+    Column('OnSendalarmMsg', Boolean),
+    Column('Reboton', Boolean),
+    Column('FunctionName', Text),
+    Column('FunctionOn', Text),
 )
 
 
@@ -16,11 +20,11 @@ def upgrade(migrate_engine):
     # migrate_engine to your metadata
     pre_meta.bind = migrate_engine
     post_meta.bind = migrate_engine
-    post_meta.tables['user'].columns['email'].create()
+    post_meta.tables['wxsetting'].create()
 
 
 def downgrade(migrate_engine):
     # Operations to reverse the above upgrade go here.
     pre_meta.bind = migrate_engine
     post_meta.bind = migrate_engine
-    post_meta.tables['user'].columns['email'].drop()
+    post_meta.tables['wxsetting'].drop()

@@ -30,7 +30,7 @@ class Wxpost(BaseModel):
 #消息记录
 def Add_Message(msg):
     try:
-        # id=Wxuser().get_id(msg['FromUserName'])
+        id=Wxuser().get_id(msg['FromUserName'])
         id=Wxuser.get(wx_uid=msg['FromUserName'])
         post=Wxpost(body=msg['Text'],timestamp=datetime.now(),wxuser_id=id,sender='普通')
         post.save()
