@@ -5,12 +5,11 @@ import json
 import datetime
 import bot.models._Fcunction
 from bot import logger
-from config import ZG_NAME_JSON_PATH,SQLALCHEMY_DATABASE_URI
+from config import ZG_NAME_JSON_PATH
 
 
 WUMIS="DSN=wumis;UID=sa;pwd=wuitghxx"
 #===========
-BOX_DB=SQLALCHEMY_DATABASE_URI
 
 #============
 

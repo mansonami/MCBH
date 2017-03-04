@@ -4,8 +4,8 @@ from flask_login import LoginManager
 
 app = Flask(__name__)
 #读取配置文件
-app.config.from_object('config')
 
+app.config.from_object('config')
 #创建数据库对象
 db = SQLAlchemy(app)
 

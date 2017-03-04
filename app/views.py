@@ -7,8 +7,7 @@ from .models import User,Post,Wxsetting
 from datetime import datetime
 from config import POSTS_PER_PAGE,DATABASE_QUERY_TIMEOUT
 from .wxchat import wx_login_bat,wx_is_login_state,wx_logout,sendmsg,WXsetting
-from bot.models.Boxfriends import Wxuser,Wxpost
-from bot.models.view import Get_vip_integral
+# from bot.models.view import Get_vip_integral
 
 
 @app.before_request

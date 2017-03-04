@@ -1,3 +1,3 @@
 from bot.models.view import *
 
-print(Sale_table('11 1'))
+Add_suggest('hhh',FromUserName='123123')

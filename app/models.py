@@ -12,6 +12,13 @@ class Wxuser(db.Model):
     def get_id(self,wx_uid):
         return Wxuser.query.filter_by(wx_uid=wx_uid).first().id
 
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def rollback(self):
+        db.session.rollback()
+
     def get(self,wx_uid):
         return Wxuser.query.filter_by(wx_uid=wx_uid).first()
 
@@ -25,6 +32,10 @@ class Wxpost(db.Model):
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime)
     wxuser_id = db.Column(db.Integer, db.ForeignKey('wxuser.id'))
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
 
     def message_posts(self):
         return Wxpost.query.order_by(Wxpost.timestamp.desc())

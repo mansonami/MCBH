@@ -6,7 +6,7 @@ import psutil
 from flask import g
 from app import app
 from config import WX_LOGIN_START_BAT,WX_QR_CODE_JPG,basedir
-from bot.models.Boxfriends import Wxuser
+# from bot.models.Boxfriends import Wxuser
 import socket
 import win32api
 

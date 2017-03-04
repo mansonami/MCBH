@@ -75,15 +75,19 @@ def add_friend(msg):
     itchat.add_friend(**msg['Text'])
     wx_uin = re.findall(r'<msg fromusername="([\S\s]+?)" ',str(msg))[0]
     try:
-        wxuser = Wxuser.get(wx_uin=wx_uin)
-        wxuser.nickname = msg['RecommendInfo']['NickName']
-        wxuser.wx_uid = msg['RecommendInfo']['UserName']
-        wxuser.save()
+        wxuser = Wxuser.query.filter_by(wx_uin=wx_uin).first()
+        if wxuser:
+            wxuser.nickname = msg['RecommendInfo']['NickName']
+            wxuser.wx_uid = msg['RecommendInfo']['UserName']
+            wxuser.save()
+        else:
+            wxuser = Wxuser(wx_uin=wx_uin,
+                            nickname = msg['RecommendInfo']['NickName'],
+                            wx_uid=msg['RecommendInfo']['UserName'])
+            wxuser.save()
     except:
-        wxuser = Wxuser(wx_uin=wx_uin,
-                        nickname=msg['RecommendInfo']['NickName'],
-                        wx_uid=msg['RecommendInfo']['UserName'])
-        wxuser.save()
+        wxuser.rollback()
+
     try:
         itchat.send_msg('Nice to meet you! \nID：%s'% wxuser.id, msg['RecommendInfo']['UserName'])
     except:
@@ -104,18 +108,20 @@ def get_uin(msg):
                 print(row['Uin'])
                 if row['Uin']!=0:
                     try:
-                        wxuser = Wxuser.get(wx_uin=row['Uin'])
+                        wxuser = Wxuser.query.filter_by(wx_uin=row['Uin']).first()
                         if wxuser:
                             wxuser.nickname = row['NickName']
                             wxuser.remarkname = row['RemarkName']
                             wxuser.wx_uid = row['UserName']
                             wxuser.save()
+                        else:
+                            wxuser = Wxuser(wx_uin=row['Uin'],
+                                            nickname=row['NickName'],
+                                            remarkname=row['RemarkName'],
+                                            wx_uid=row['UserName'])
+                            wxuser.save()
                     except:
-                        wxuser = Wxuser(wx_uin=row['Uin'],
-                                        nickname=row['NickName'],
-                                        remarkname=row['RemarkName'],
-                                        wx_uid=row['UserName'])
-                        wxuser.save()
+                        wxuser.rollback()
     except BaseException as e:
         logger.debug(e)
 

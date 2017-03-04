@@ -17,7 +17,7 @@ from bot.models.alidayu import AlibabaAliqinFcSmsNumSendRequest
 
 def Tuling_box(text,**kwargs):return Tuling.get_response(text,**kwargs)#图灵机器人
 def Add_Message(msg):Boxfriends.Add_Message(msg)#日志记录
-def Add_suggest(msg,**kwargs):Boxfriends.Add_Sugges(msg)#建议
+def Add_suggest(msg,**kwargs):Boxfriends.Add_Sugges(msg,**kwargs)#建议
 def Get_right(uid):return Boxfriends.Get_User_Information(uid,'Right')#查询用户权限
 def Get_username(uid):return Boxfriends.Get_User_Information(uid,'Username')#获得用户名字
 
@@ -266,7 +266,7 @@ def send_msg(id,text):
 
 
 def setrickname(id,name):
-    user=Boxfriends.Wxuser.get(id=int(id))
+    user=Boxfriends.return_user(id)
     logger.debug(user.wx_uid)
     itchat.set_alias(user.wx_uid,name)
 
