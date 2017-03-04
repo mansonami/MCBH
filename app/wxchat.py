@@ -1,12 +1,12 @@
-
+import json
 import time
 import shutil
 import os
 import psutil
 from flask import g
 from app import app
-from config import WX_LOGIN_START_BAT,WX_QR_CODE_JPG,basedir
-# from bot.models.Boxfriends import Wxuser
+from config import WX_LOGIN_START_BAT,WX_QR_CODE_JPG,basedir,FUNCTIONAL_STATUS
+from .models import Wxuser,Wxsetting
 import socket
 import win32api
 
@@ -67,9 +67,9 @@ def sendmsg(id,text):
 
 
 
-def WXsetting(id,name,right):
+def WX_user_setting(id,name,right):
     try:
-        user=Wxuser.get(id=id)
+        user=Wxuser.query.filter_by(id=id).first()
         user.right=right
         if user.remarkname!=name:
             user.remarkname = name
@@ -94,3 +94,14 @@ def getpid():
     ret=s.recv(1024).decode('utf-8')
     s.close()
     return ret
+
+def Update_setting():
+    q=Wxsetting().getsetting()
+    with open(FUNCTIONAL_STATUS,'w') as f:
+        f.write(json.dumps(q))
+
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    data = 'Update'
+    app.logger.debug(data)
+    s.sendto(data.encode(), ('127.0.0.1', 9999))
+    s.close()

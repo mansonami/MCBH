@@ -1,6 +1,16 @@
 {% extends "wechat.html" %}
 {% block script %}
 <script>
+        function wxadminphoneset() {
+            $.post('/wechat/setting',{
+                type:'adminphoneset',
+                phone1:$('#adminphone1').val(),
+                phone2:$('#adminphone2').val(),
+{#                OnSend:$('#OnSendalarmMsg').bootstrapSwitch('state')#}
+            }).done(function (wxadminphoneset) {
+                alert(wxadminphoneset['text'])
+            })
+        }
         function Wx_Feature_Settings(){
             $.post('/wechat/setting',{
                 type:'Feature_Settings',
@@ -49,7 +59,7 @@
                                     <td>
                                         <div class="input-group">
                                             <span class="input-group-addon">Phone:</span>
-                                            <input id="adminphone1" type="text" class="form-control" value="13518204382">
+                                            <input id="adminphone1" type="text" class="form-control" value="{{ function_list['adminphone'][:11] }}">
                                         </div>
                                     </td>
                                 </tr>
@@ -57,7 +67,7 @@
                                     <td>
                                         <div class="input-group">
                                             <span class="input-group-addon">Phone:</span>
-                                            <input id="adminphone2" type="text" class="form-control" value="13541106254">
+                                            <input id="adminphone2" type="text" class="form-control" value="{{ function_list['adminphone'][12:] }}">
                                         </div>
                                     </td>
                                 </tr>

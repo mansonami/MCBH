@@ -2,8 +2,9 @@ import datetime
 import time
 import re
 import itchat
+import json
+from config import FUNCTIONAL_STATUS
 from threading import Thread
-
 from bot import logger
 from bot.models import wumis
 from bot.models import Boxfriends
@@ -23,13 +24,13 @@ def Get_username(uid):return Boxfriends.Get_User_Information(uid,'Username')#获
 
 
 
-def Send_Sms_msg():
+def Send_Sms_msg(phone):
     req = AlibabaAliqinFcSmsNumSendRequest('23578698', 'a74a15404e8b4e2780dde859c7efd096')
     req.extend = ""
     req.sms_type = "normal"
     req.sms_free_sign_name = "机器人"
     req.sms_param = ""
-    req.rec_num = "13541106254,13518204382"
+    req.rec_num = phone
     req.sms_template_code = "SMS_35770009"
     resp = req.getResponse()
     logger.info(resp)
@@ -446,6 +447,13 @@ def update_zg(text,**kwargs):
         logger.debug('update_zg')
         logger.debug(e)
         return '更新失败'
+
+def Update_function_status():
+    with open(FUNCTIONAL_STATUS, 'r') as f:
+        return json.loads(f.read())
+
+
+
 
 # #管理员发送消息,搜索功能
 # def Send_msg(text,**kwargs):

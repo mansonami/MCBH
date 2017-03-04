@@ -6,6 +6,9 @@ from bot.models.Boxfriends import Wxuser
 from threading import Thread
 
 
+global Functional_status
+#功能状态读取
+Functional_status=Update_function_status()
 #权限设置
 RIGHT={
     0:{
@@ -61,17 +64,23 @@ def text_reply(msg):
     logger.debug('sendtext:%s'%msg)
     try:
         text=msg['Text'].split(' ')[0]
-        func=eval(RIGHT[Get_right(msg['FromUserName'])][text])
-        Add_Message(msg)  # 日志记录
-        return func(msg['Text'],FromUserName=msg['FromUserName'])
+        if Functional_status[RIGHT[4][text]]:
+            func = eval(RIGHT[Get_right(msg['FromUserName'])][text])
+            Add_Message(msg)  # 日志记录
+            return func(msg['Text'], FromUserName=msg['FromUserName'])
+        else:
+            return '%s 停用ing'%text
     except KeyError as e:
-        logger.debug(e)
-        # return Tuling_box(msg['Text'],FromUserName=msg['FromUserName'])
+        logger.warning(e)
+        if Functional_status['Reboton']:
+            return Tuling_box(msg['Text'],FromUserName=msg['FromUserName'])
 
 
 #收到好友邀请自动添加好友
 @itchat.msg_register(FRIENDS)
 def add_friend(msg):
+    if not Functional_status['Add_friend']:
+        return 'True'
     itchat.add_friend(**msg['Text'])
     wx_uin = re.findall(r'<msg fromusername="([\S\s]+?)" ',str(msg))[0]
     try:
@@ -87,7 +96,6 @@ def add_friend(msg):
             wxuser.save()
     except:
         wxuser.rollback()
-
     try:
         itchat.send_msg('Nice to meet you! \nID：%s'% wxuser.id, msg['RecommendInfo']['UserName'])
     except:
@@ -127,6 +135,7 @@ def get_uin(msg):
 
 
 def UDP():
+    global Functional_status
     import socket
     import os
     while True:
@@ -143,6 +152,8 @@ def UDP():
                     ss.sendto(pid.encode(), addr)
                 elif 'name' in text:
                     setrickname(text.split(' ')[1],text.split(' ')[2])
+                elif 'Update' in text:
+                    Functional_status = Update_function_status()
                 else:
                     logger.debug(text)
                     id = text.split()[0]
@@ -154,11 +165,11 @@ def UDP():
 
 def ec():
     # 机器人退出 发送短信
-    Send_Sms_msg()
-
+    if Functional_status['OnSendalarmMsg']:
+        Send_Sms_msg(Functional_status['adminphone'])
 
 thr = Thread(target=UDP, args=[])
 thr.setDaemon(True)
 thr.start()
-itchat.auto_login(False)#暂存登录状态
+itchat.auto_login(False,exitCallback=ec)#暂存登录状态
 itchat.run()

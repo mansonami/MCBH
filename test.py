@@ -1,3 +1,8 @@
-from bot.models.view import *
+from app.models import Wxsetting
+import json
 
-Add_suggest('hhh',FromUserName='123123')
+
+q=Wxsetting().getsetting()
+
+with open('Functional_status.JSON','w') as f:
+    f.write(json.dumps(q))

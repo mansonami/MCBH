@@ -5,7 +5,6 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 SQLALCHEMY_DATABASE_URI = 'mysql://root:a845331767@localhost:3306/test'
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 SQLALCHEMY_RECORD_QUERIES = True
-SQLALCHEMY_COMMIT_ON_TEARDOWN=True
 DATABASE_QUERY_TIMEOUT = 0.5
 
 
@@ -28,6 +27,5 @@ if os.path.exists(WX_QR_CODE_JPG):
 ZG_NAME_JSON_PATH=os.path.join(basedir,'ZG_NAME.json')
 BALANCE_BABLE_IMG_PATH=os.path.join(basedir,'bot','bill.png')
 TEMPORARY_PATH=os.path.join(basedir,'bot','temporary')
-
 BOT_SQLALCHEMY_DATABASE_URI =os.path.join(basedir, 'bot.db')
-
+FUNCTIONAL_STATUS =os.path.join(basedir, 'Functional_status.JSON')

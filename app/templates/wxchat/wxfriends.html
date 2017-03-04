@@ -26,7 +26,7 @@
         </thead>
         <tbody>
         {% if users %}
-            {% for u in users %}
+            {% for u in users.items %}
                 <tr class="info">
                     <td>
                         {{u.id}}
@@ -133,15 +133,15 @@
         </tbody>
     </table>
     <div class="pull-right">
-        {% if prev_num %}
-            <a type="button" class="btn btn-info" href="{{ url_for('wechat_wxfriends') }}?page={{ prev_num }}">上一页</a>
+        {% if users.has_prev %}
+            <a type="button" class="btn btn-info" href="{{ url_for('wechat_wxfriends') }}?page={{ users.prev_num }}">上一页</a>
         {% else %}
             <a type="button" class="btn btn-info" href="#">上一页</a>
         {% endif %}
     </div>
     <div class="pull-left">
-        {% if next_num %}
-            <a type="button" class="btn btn-info" href="{{ url_for('wechat_wxfriends') }}?page={{ next_num }}">下一页</a>
+        {% if users.has_next %}
+            <a type="button" class="btn btn-info" href="{{ url_for('wechat_wxfriends') }}?page={{ users.next_num }}">下一页</a>
         {% else %}
             <a type="button" class="btn btn-info" href="#">下一页</a>
         {% endif %}

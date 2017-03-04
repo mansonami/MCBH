@@ -3,11 +3,11 @@ from flask_login import login_user, logout_user, current_user, login_required
 from flask_sqlalchemy import get_debug_queries
 from app import app,lm,db
 from .forms import LoginForm,RegistrationForm,PostForm
-from .models import User,Post,Wxsetting
+from .models import User,Post,Wxsetting,Wxuser,Wxpost
 from datetime import datetime
 from config import POSTS_PER_PAGE,DATABASE_QUERY_TIMEOUT
-from .wxchat import wx_login_bat,wx_is_login_state,wx_logout,sendmsg,WXsetting
-# from bot.models.view import Get_vip_integral
+from .wxchat import wx_login_bat,wx_is_login_state,wx_logout,sendmsg,WX_user_setting,Update_setting
+from bot.models.wudebit import Select_vip_code
 
 
 @app.before_request
@@ -110,10 +110,9 @@ def wechat():
     if not ret:
         flash('微信掉线,请尽快重新登录')
         return render_template('wechat.html',
-                               is_wxchat=ret)
-    posts = Wxpost.select().order_by(Wxpost.timestamp.desc()).paginate(1,15)
+                               is_wxchat=ret,
+                               active_page='wechat')
     return render_template('wechat.html',
-                           posts=posts,
                            is_wxchat=ret,
                            active_page='wechat')
 
@@ -146,24 +145,12 @@ def wechat_login():
 def wechat_wxfriends():
     ret=wx_is_login_state()
     if not ret:
-        flash('微信未登录,停用部分功能')
+        flash('微信未登录,部分功能无法正常使用')
     page = request.args.get('page', 1, type=int)
-    #计算页数
-    prev_num=page-1
-    if prev_num==0:
-        prev_num=False
-    next_num=page+1
-    #计算页数
-    posts = Wxpost.select().order_by(Wxpost.timestamp.desc()).paginate(1,15)
-    users=Wxuser.select().paginate(page, 15)
-    if len(users)<15:
-        next_num=False
+    users=Wxuser.query.paginate(page, 15, False)
     return render_template('wxchat/wxfriends.html',
-                           posts=posts,
                            users=users,
                            is_wxchat=ret,
-                           prev_num=prev_num,  #上一页
-                           next_num=next_num,  #下一页
                            active_page='wechat_wxfriends'
                            )
 
@@ -216,7 +203,7 @@ def wechat_setting():
             remarkname = request.form['remarkname']
             right = request.form['right']
             return jsonify({
-                'text': WXsetting(id, remarkname, right)
+                'text': WX_user_setting(id, remarkname, right)
             })
     if post_type == 'adminphoneset':
         ph1 = request.form['phone1']
@@ -226,6 +213,7 @@ def wechat_setting():
             setting.adminphone='%s,%s'%(ph1,ph2)
             db.session.add(setting)
             db.session.commit()
+            Update_setting()
             return jsonify({
                 'text':'更新成功'
             })
@@ -247,6 +235,7 @@ def wechat_setting():
         q.Reboton=ret2
         db.session.add(q)
         db.session.commit()
+        Update_setting()
         return jsonify({
             'text': '操作成功'
         })
@@ -289,6 +278,7 @@ def wechat_setting():
         q.Sale_Brand_Table = ret7
         db.session.add(q)
         db.session.commit()
+        Update_setting()
         return jsonify({
             'text': '操作成功'
         })
@@ -300,12 +290,13 @@ def wechat_setting():
 @app.route('/wechat/queryvip', methods = ['POST','GET'])
 def wechat_queryvip():
     phone = request.form['phone']
+    print(phone)
     if len(phone)!=11:
         return jsonify({
         'text': '不是电话号码'
     })
     return jsonify({
-        'text': Get_vip_integral('phone %s' % phone)
+        'text': Select_vip_code('%s' % phone)
     })
 
 @app.errorhandler(404)
