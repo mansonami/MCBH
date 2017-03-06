@@ -5,10 +5,10 @@ from bot import logger
 from bot.models.Boxfriends import Wxuser
 from threading import Thread
 
-
-global Functional_status
 #功能状态读取
+global Functional_status
 Functional_status=Update_function_status()
+
 #权限设置
 RIGHT={
     0:{
@@ -64,12 +64,16 @@ def text_reply(msg):
     logger.debug('sendtext:%s'%msg)
     try:
         text=msg['Text'].split(' ')[0]
-        if Functional_status[RIGHT[4][text]]:
-            func = eval(RIGHT[Get_right(msg['FromUserName'])][text])
-            Add_Message(msg)  # 日志记录
-            return func(msg['Text'], FromUserName=msg['FromUserName'])
-        else:
-            return '%s 停用ing'%text
+        if text in Functional_status:
+            if Functional_status[RIGHT[4][text]]:
+                func = eval(RIGHT[Get_right(msg['FromUserName'])][text])
+                Add_Message(msg)  # 日志记录
+                return func(msg['Text'], FromUserName=msg['FromUserName'])
+            else:
+                return '%s 停用ing' % text
+        func = eval(RIGHT[Get_right(msg['FromUserName'])][text])
+        return func(msg['Text'], FromUserName=msg['FromUserName'])
+
     except KeyError as e:
         logger.warning(e)
         if Functional_status['Reboton']:
@@ -133,7 +137,7 @@ def get_uin(msg):
     except BaseException as e:
         logger.debug(e)
 
-
+#UPD 通讯
 def UDP():
     global Functional_status
     import socket
