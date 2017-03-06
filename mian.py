@@ -64,18 +64,18 @@ def text_reply(msg):
     logger.debug('sendtext:%s'%msg)
     try:
         text=msg['Text'].split(' ')[0]
-        if text in Functional_status:
+        if RIGHT[4][text] in Functional_status:
             if Functional_status[RIGHT[4][text]]:
                 func = eval(RIGHT[Get_right(msg['FromUserName'])][text])
                 Add_Message(msg)  # 日志记录
                 return func(msg['Text'], FromUserName=msg['FromUserName'])
             else:
                 return '%s 停用ing' % text
+
         func = eval(RIGHT[Get_right(msg['FromUserName'])][text])
         return func(msg['Text'], FromUserName=msg['FromUserName'])
-
     except KeyError as e:
-        logger.warning(e)
+        logger.debug(e)
         if Functional_status['Reboton']:
             return Tuling_box(msg['Text'],FromUserName=msg['FromUserName'])
 
