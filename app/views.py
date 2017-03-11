@@ -154,6 +154,20 @@ def wechat_wxfriends():
                            is_wxchat=ret,
                            active_page='wechat_wxfriends'
                            )
+#聊天记录
+@app.route('/wechat/wxrecord/', methods=['GET', 'POST'])
+@login_required
+def wechat_record():
+    ret = wx_is_login_state()
+    msg_posts=Wxpost().message_posts().paginate(1, 30, False)
+    sgt_posts=Wxpost().suggest_posts().paginate(1, 30, False)
+    return render_template('wxchat/wxrecord.html',
+                           is_wxchat=ret,
+                           msg_posts=msg_posts,
+                           sgt_posts=sgt_posts,
+                           active_page='wechat_record'
+                           )
+
 
 @app.route('/wechat/wxlogout/', methods=['GET', 'POST'])
 @login_required

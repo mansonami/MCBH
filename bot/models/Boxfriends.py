@@ -8,7 +8,7 @@ from app.models import Wxuser,Wxpost
 #消息记录
 def Add_Message(msg):
     try:
-        id=Wxuser().get_id(msg['FromUserName'])
+        id=Wxuser().get_name(msg['FromUserName'])
         post=Wxpost(body=msg['Text'],timestamp=datetime.now(),wxuser_id=id,sender='普通')
         post.save()
     except BaseException as e:
@@ -18,7 +18,7 @@ def Add_Message(msg):
 
 def Add_Sugges(msg,**kwargs):
     try:
-        id = Wxuser().get_id(kwargs['FromUserName'])
+        id = Wxuser().get_name(kwargs['FromUserName'])
         post=Wxpost(body=msg,timestamp=datetime.utcnow(),wxuser_id=id,sender='建议')
         post.save()
     except BaseException as e:

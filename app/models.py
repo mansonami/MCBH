@@ -7,10 +7,16 @@ class Wxuser(db.Model):
     nickname=db.Column(db.String(64))#微信网名
     remarkname=db.Column(db.String(64))#微信备注名
     right =db.Column(db.Integer,default=1)  # 权限
-    posts = db.relationship('Wxpost', backref='author', lazy='dynamic')
 
     def get_id(self,wx_uid):
         return Wxuser.query.filter_by(wx_uid=wx_uid).first().id
+
+    def get_name(self,wx_uid):
+        id=Wxuser.query.filter_by(wx_uid=wx_uid).first()
+        if id.remarkname:
+            return id.remarkname
+        return id.nickname
+
 
     def save(self):
         db.session.add(self)
@@ -31,14 +37,17 @@ class Wxpost(db.Model):
     sender=db.Column(db.String(126))
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime)
-    wxuser_id = db.Column(db.Integer, db.ForeignKey('wxuser.id'))
+    wxuser_id = db.Column(db.String(140))
+
+    def message_posts(self):
+        return Wxpost.query.filter_by(sender='普通').order_by(Wxpost.timestamp.desc())
+
+    def suggest_posts(self):
+        return  Wxpost.query.filter_by(sender='建议').order_by(Wxpost.timestamp.desc())
 
     def save(self):
         db.session.add(self)
         db.session.commit()
-
-    def message_posts(self):
-        return Wxpost.query.order_by(Wxpost.timestamp.desc())
 
     def __repr__(self):
         return '<WXPost %r>' % (self.body)

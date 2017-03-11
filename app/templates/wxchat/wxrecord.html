@@ -1,0 +1,75 @@
+{% extends "wechat.html" %}
+{% block wxlogin %}
+    <div class="row clearfix">
+        <div class="col-md-6 column">
+            <table class="table table-bordered table-hover">
+                <caption>消息</caption>
+                <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Content
+                    </th>
+                    <th>
+                        Send time
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if msg_posts %}
+                    {% for msg in msg_posts.items%}
+                        <tr class="success">
+                            <td>
+                                {{ msg.wxuser_id }}
+                            </td>
+                            <td>
+                                {{ msg.body }}
+                            </td>
+                            <td>
+                                {{momentjs(msg.timestamp).fromNow()}}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6 column">
+            <table class="table table-bordered table-hover">
+                <caption>建议</caption>
+                <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Content
+                    </th>
+                    <th>
+                        Send time
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if sgt_posts %}
+                    {% for msg in sgt_posts.items%}
+                        <tr class="warning">
+                            <td>
+                                {{ msg.wxuser_id }}
+                            </td>
+                            <td>
+                                {{ msg.body }}
+                            </td>
+                            <td>
+                                {{momentjs(msg.timestamp).fromNow()}}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
