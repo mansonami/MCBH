@@ -121,6 +121,7 @@ def wechat():
 def wechat_login():
     ret=wx_is_login_state()
     if not ret:
+        wx_logout()
         temp = request.args.get('timestamp')
         WX_PID = wx_login_bat(temp)
         if WX_PID:
