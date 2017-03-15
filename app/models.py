@@ -153,7 +153,8 @@ class Wxsetting(db.Model):
             'Sale_table': q.Sale_table,
             'Sale_today': q.Sale_today,
             'Sale_Brand_All': q.Sale_Brand_All,
-            'Sale_Brand_Table': q.Sale_Brand_Table
+            'Sale_Brand_Table': q.Sale_Brand_Table,
+            'Apitoken':q.Apitoken
         }
 
     def GetApitoken(self):
