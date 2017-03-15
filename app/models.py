@@ -118,6 +118,7 @@ class Post(db.Model):
 
 class Wxsetting(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    Apitoken=db.Column(db.String(64))#调用API token查看
     adminphone=db.Column(db.String(64))#管理员电话
     OnSendalarmMsg=db.Column(db.Boolean)#是否启用报警短信
     Reboton=db.Column(db.Boolean)#是否启用小黄鸭
@@ -136,6 +137,9 @@ class Wxsetting(db.Model):
         else:
             q=Wxsetting()
             return q
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
 
     def getsetting(self):
         q=self.get()
@@ -151,5 +155,13 @@ class Wxsetting(db.Model):
             'Sale_Brand_All': q.Sale_Brand_All,
             'Sale_Brand_Table': q.Sale_Brand_Table
         }
+
+    def GetApitoken(self):
+        q = self.get()
+        return {
+            'Apitoken':q.Apitoken
+        }
+
+
     def __repr__(self):
         return '<Wxsetting %r>' % (self.id)

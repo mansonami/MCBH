@@ -21,6 +21,9 @@ app.jinja_env.globals['momentjs'] = momentjs
 
 from app import views, models
 
+from .api_1_0 import api as api_1_0_blueprint
+
+app.register_blueprint(api_1_0_blueprint, url_prefix='/api')
 
 #if not app.debug:
 import logging

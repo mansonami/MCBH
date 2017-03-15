@@ -3,7 +3,7 @@ app.db
 bot.db
 __pycache__\
 flask_menv\
-
+test.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -11,6 +11,13 @@
                 alert(wxadminphoneset['text'])
             })
         }
+        function createapitoken() {
+            $.post('{{ url_for('api.createtoken') }}',{
+            }).done(function (createapitoken) {
+                $("#Apitokeninput").val((createapitoken['text']));
+                alert("修改成功")
+            })
+        }
         function Wx_Feature_Settings(){
             $.post('/wechat/setting',{
                 type:'Feature_Settings',
@@ -68,6 +75,33 @@
                                         <div class="input-group">
                                             <span class="input-group-addon">Phone:</span>
                                             <input id="adminphone2" type="text" class="form-control" value="{{ function_list['adminphone'][12:] }}">
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion"
+                               href="#setApitoken">
+                                Api Token 设置
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="setApitoken" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table table-hover">
+                                <caption><button type="button" class="btn btn-default" onclick="createapitoken()">修改</button></caption>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Token:</span>
+                                            <input id="Apitokeninput" disabled="true" type="text" class="form-control" value="{{ function_list['adminphone'][:11] }}">
                                         </div>
                                     </td>
                                 </tr>
@@ -217,7 +251,6 @@
     </div>
 
 <script>
-
     $("div[class='switch']").each(function() {
         $this = $(this);
     var onColor = $this.attr("onColor");

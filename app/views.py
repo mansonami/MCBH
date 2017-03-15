@@ -314,6 +314,8 @@ def wechat_queryvip():
         'text': Select_vip_code('%s' % phone)
     })
 
+
+
 @app.errorhandler(404)
 def internal_error(error):
     return redirect(url_for('index'))

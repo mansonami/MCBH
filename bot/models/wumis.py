@@ -243,7 +243,7 @@ def Update_zgname():
         cursor.close()
         conn.close()
 
-def aaa(zgcode):
+def Vip_query_Counters(zgcode):
     global WUMIS,ZG_NAME
     try:
         conn = pyodbc.connect(WUMIS,autocommit=True)
@@ -257,8 +257,8 @@ def aaa(zgcode):
         if len(ret)==0:
             return False
         return ret
-    except:
-        return False
+    except BaseException as e:
+        return '查询无结果 %s'%e
     finally:
         cursor.close()
         conn.close()
@@ -266,5 +266,4 @@ def aaa(zgcode):
 
 
 if __name__=='__main__':
-    aaa()
     pass
